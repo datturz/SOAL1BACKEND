@@ -1,0 +1,74 @@
+Soal 1 
+
+Langkah Langkah Membuat Database Sekolahku dengan table users,courses,userCourse
+Menggunakan sql dari xamp dikarenakan mysql.exe server error jadi saya menggunakan  xampp  untuk menjalankan query 
+	mysql > show databases;
+	mysql > create database sekolahku;
+	mysql > use sekolahku;
+	mysql > create table users (id int not null AUTO_INCREMENT, username varchar(50), email varchar(50), pasword varchar(50), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP , updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, primary key (id) 
+1.1 Buatlah tabel "users" yang memiliki struktur/model sebagai berikut. Tabel "users" merupakan kumpulan data peserta didik di sebuah sekolah.
+
+	Jawaban : mysql > create table users (id int not null AUTO_INCREMENT, username varchar(50), email varchar(50), pasword varchar(50), created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP , updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, primary key (id) )
+		  mysql > insert into users values (null,'Andi','andi@andi.com','12345',null,null),(null,'Andi','andi@andi.com','12345',null,null),
+			(null,'Budi','budi@budi.com','67890',null,null),
+			(null,'Caca','caca@caca.com','abcde',null,null),
+			(null,'Deni','deni@deni.com','fghij',null,null),
+			(null,'Euis','euis@euis.com','klmno',null,null),
+			(null,'Fafa','fafa@fafa.com','pqrst',null,null)
+1.2 Buatlah tabel "courses" yang memiliki struktur/model sebagai berikut. Tabel "courses" merupakan kumpulan data mata kuliah yang diajarkan di sebuah sekolah.
+
+	Jawaban : mysql > create table courses (id int not null AUTO_INCREMENT, course varchar(50),mentor varchar(50),title varchar(50), primary key (id))
+		: mysql > inser into values (null, 'C++', 'Ari', 'Dr.'),
+		 (null, 'C#', 'Ari', 'Dr.'), (null, 'C#', 'Ari', 'Dr.'), 
+		 (null,'CSS', 'Cania', 'S.KoM'), 
+		 (null,'HTML', 'Cania', 'S.KoM'), 
+		 (null,'JAVASCRIPT', 'Cania', 'S.Kom'), 
+		 (null,'Python', 'Bary', 'S.T'), 
+		 (null,'Micropython', 'Bary ', 'S.T'), 
+		 (null,'Java', 'Darren', 'M.T'), 
+		 (null,'Ruby','Darren', 'M.T')
+
+1.3 Buatlah tabel "userCourse" yang memiliki struktur/model sebagai berikut. Tabel "userCourse" merupakan tabel penghubung/transaksi antara tabel "user" & "courses".
+	
+	Jawaban : mysl > create table userCourse (id_user int, id_course int )
+		: insert into usercourse values 
+		('1','1'),
+		('1','2'),
+		('1','3'),
+		('2','4'),
+		('2','5'),
+		('2','6'),
+		('3','7'),
+		('3','8'),
+		('3','9'),
+		('4','1'),
+		('4','3'),
+		('4','5'),
+		('5','2'),
+		('5','4'),
+		('5','6'),
+		('6','7'),
+		('6','8'),
+		('6','9')
+
+1.4 Dari tabel "users", "courses" dan "userCourse", tampilkan semua daftar peserta didik beserta mata kuliah yang diikutinya, lengkap dengan nama & gelar mentornya. Hasil yang diharapkan adalah sebagai berikut:
+	
+	Jawaban : mysql > select a.id , a.username, b.course,b.mentor,b.title from users a , courses b, usercourse c where a.id = c.id_user and b.id = c.id_course
+
+1.5 Dari tabel "users", "courses" dan "userCourse", tampilkan daftar peserta didik beserta mata kuliah yang diikutinya, yang mentornya bergelar sarjana. Hasil yang diharapkan adalah sebagai berikut:
+
+	Jawaban : mysql > select a.id , a.username, b.course,b.mentor,b.title from users a , courses b, usercourse c where a.id = c.id_user and b.id = c.id_course and b.title like 'S.%'
+
+
+1.6 Dari tabel "users", "courses" dan "userCourse", tampilkan daftar peserta didik beserta mata kuliah yang diikutinya, yang mentornya bergelar selain sarjana. Hasil yang diharapkan adalah sebagai berikut:
+
+	Jawaban : mysql > select a.id , a.username, b.course,b.mentor,b.title from users a , courses b, usercourse c where a.id = c.id_user and b.id = c.id_course and b.title not like 'S.%'
+
+1.7 Dari tabel "users", "courses" dan "userCourse", tampilkan jumlah peserta didik untuk setiap mata kuliah. Hasil yang diharapkan adalah sebagai berikut:
+
+
+	Jawaban : select b.course,b.mentor,b.title, count(c.id_user) as jumlah_peserta from users a , courses b, usercourse c where a.id = c.id_user and b.id = c.id_course group by course
+
+1.8 Dari tabel "users", "courses" dan "userCourse", tampilkan jumlah peserta didik beserta total fee untuk setiap mentor. Total fee dihitung dengan besaran Rp 2.000.000,- per peserta didik. Hasil yang diharapkan adalah sebagai berikut:
+
+	Jawaban : select b.mentor, count(c.id_user) as jumlah_peserta, count(c.id_course) * 2000000 as total_fe from users a , courses b, usercourse c where a.id = c.id_user and b.id = c.id_course group by mentor
